@@ -9,13 +9,13 @@
 # minimal required sip version
 %define		sip_ver		2:4.19.23
 # last qt version covered by these bindings (minimal required is currently 5.0.0)
-# %define	qt_ver		%{version}
-%define		qt_ver		5.12.0
+%define		qt_ver		5.15.0
 %define		qtenginio_ver	1:1.6.0
 
 Summary:	Python 2 bindings for the Qt5 toolkit
 Summary(pl.UTF-8):	Wiązania Pythona 2 do toolkitu Qt5
 Name:		python-%{module}
+# 5.15.5 seems to be the last python2-compatible version
 Version:	5.15.5
 Release:	2
 License:	GPL v3
@@ -47,6 +47,7 @@ BuildRequires:	Qt5Quick-devel >= %{qt_ver}
 BuildRequires:	Qt5Quick3D-devel >= %{qt_ver}
 BuildRequires:	Qt5Sensors-devel >= %{qt_ver}
 BuildRequires:	Qt5SerialPort-devel >= %{qt_ver}
+BuildRequires:	Qt5Speech-devel >= %{qt_ver}
 BuildRequires:	Qt5Sql-devel >= %{qt_ver}
 BuildRequires:	Qt5Svg-devel >= %{qt_ver}
 BuildRequires:	Qt5Test-devel >= %{qt_ver}
@@ -371,6 +372,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{py_sitedir}/PyQt5/QtSql.so
 %attr(755,root,root) %{py_sitedir}/PyQt5/QtSvg.so
 %attr(755,root,root) %{py_sitedir}/PyQt5/QtTest.so
+%attr(755,root,root) %{py_sitedir}/PyQt5/QtTextToSpeech.so
 %attr(755,root,root) %{py_sitedir}/PyQt5/QtWebChannel.so
 %if %{with webkit}
 %attr(755,root,root) %{py_sitedir}/PyQt5/QtWebKit.so
@@ -432,6 +434,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{py3_sitedir}/PyQt5/QtSql.so
 %attr(755,root,root) %{py3_sitedir}/PyQt5/QtSvg.so
 %attr(755,root,root) %{py3_sitedir}/PyQt5/QtTest.so
+%attr(755,root,root) %{py3_sitedir}/PyQt5/QtTextToSpeech.so
 %attr(755,root,root) %{py3_sitedir}/PyQt5/QtWebChannel.so
 %if %{with webkit}
 %attr(755,root,root) %{py3_sitedir}/PyQt5/QtWebKit.so
@@ -477,6 +480,7 @@ rm -rf $RPM_BUILD_ROOT
 %{py3_sitedir}/PyQt5/QtSql.pyi
 %{py3_sitedir}/PyQt5/QtSvg.pyi
 %{py3_sitedir}/PyQt5/QtTest.pyi
+%{py3_sitedir}/PyQt5/QtTextToSpeech.pyi
 %{py3_sitedir}/PyQt5/QtWebChannel.pyi
 %if %{with webkit}
 %{py3_sitedir}/PyQt5/QtWebKit.pyi
