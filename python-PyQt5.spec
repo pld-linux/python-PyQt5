@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	python2		# CPython 2.x modules
-%bcond_without	python3		# CPython 3.x modules
+%bcond_with	python3		# CPython 3.x modules (built from python3-PyQt5.spec)
 %bcond_with	enginio		# Qt5Enginio support
 %bcond_without	webkit		# Qt5WebKit support
 
