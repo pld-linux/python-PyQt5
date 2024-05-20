@@ -17,7 +17,7 @@ Summary(pl.UTF-8):	Wiązania Pythona 2 do toolkitu Qt5
 Name:		python-%{module}
 # 5.15.5 seems to be the last python2-compatible version
 Version:	5.15.5
-Release:	2
+Release:	3
 License:	GPL v3
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/PyQt5/
@@ -156,6 +156,7 @@ Summary:	pyuic5 development tool for Python 3
 Summary(pl.UTF-8):	Narzędzie programistyczne pyuic5 dla Pythona 3
 Group:		Development/Tools
 Requires:	python3-PyQt5 = %{version}-%{release}
+Conflicts:	python-PyQt5-uic < 5.15.5-3
 
 %description -n python3-PyQt5-uic
 pyuic5 development tool for Python 3.
@@ -304,6 +305,25 @@ cd ..
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
+%if %{with python2}
+%{__make} -C build-py2 install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	INSTALL_ROOT=$RPM_BUILD_ROOT
+
+%py_comp $RPM_BUILD_ROOT%{py_sitedir}
+%py_ocomp $RPM_BUILD_ROOT%{py_sitedir}
+
+%{__mv} $RPM_BUILD_ROOT%{_bindir}/pyuic5{,-2}
+
+# don't use py_postclean, leave *.py in %{py_sitedir}/PyQt4/uic/widget-plugins
+%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/*.py
+%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/*.py
+%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/Compiler/*.py
+%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/Loader/*.py
+%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/port_v2/*.py
+%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/port_v3/*.py
+%endif
+
 %if %{with python3}
 %{__make} -C build-py3 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -313,23 +333,7 @@ install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 %py3_ocomp $RPM_BUILD_ROOT%{py3_sitedir}
 
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/pyuic5{,-3}
-%endif
-
-%if %{with python2}
-%{__make} -C build-py2 install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	INSTALL_ROOT=$RPM_BUILD_ROOT
-
-%py_comp $RPM_BUILD_ROOT%{py_sitedir}
-%py_ocomp $RPM_BUILD_ROOT%{py_sitedir}
-
-# don't use py_postclean, leave *.py in %{py_sitedir}/PyQt4/uic/widget-plugins
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/*.py
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/*.py
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/Compiler/*.py
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/Loader/*.py
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/port_v2/*.py
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/PyQt5/uic/port_v3/*.py
+ln -sf pyuic5-3 $RPM_BUILD_ROOT%{_bindir}/pyuic5
 %endif
 
 cp -R examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
@@ -393,7 +397,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files uic
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/pyuic5
+%attr(755,root,root) %{_bindir}/pyuic5-2
 %{py_sitedir}/PyQt5/uic
 %endif
 
@@ -494,6 +498,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n python3-PyQt5-uic
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/pyuic5
 %attr(755,root,root) %{_bindir}/pyuic5-3
 %{py3_sitedir}/PyQt5/uic
 %endif
