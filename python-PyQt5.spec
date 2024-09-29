@@ -3,6 +3,7 @@
 %bcond_without	python2		# CPython 2.x modules
 %bcond_with	python3		# CPython 3.x modules (built from python3-PyQt5.spec)
 %bcond_with	enginio		# Qt5Enginio support
+%bcond_with	qt_plugins	# PyQt5 qml and QtDesigner plugins (built in python3 version from python3-PyQt5.spec)
 %bcond_without	webkit		# Qt5WebKit support
 
 %define		module	PyQt5
@@ -17,7 +18,7 @@ Summary(pl.UTF-8):	Wiązania Pythona 2 do toolkitu Qt5
 Name:		python-%{module}
 # 5.15.5 seems to be the last python2-compatible version
 Version:	5.15.5
-Release:	3
+Release:	4
 License:	GPL v3
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/PyQt5/
@@ -345,8 +346,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc NEWS README
+%if %{with qt_plugins}
 %dir %{_libdir}/qt5/plugins/PyQt5
 %attr(755,root,root) %{_libdir}/qt5/plugins/PyQt5/libpyqt5qmlplugin.so
+%endif
 %dir %{py_sitedir}/PyQt5
 %attr(755,root,root) %{py_sitedir}/PyQt5/pylupdate.so
 %attr(755,root,root) %{py_sitedir}/PyQt5/pyrcc.so
@@ -516,9 +519,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_sipfilesdir}/PyQt5
 
+%if %{with qtdesigner}
 %files -n Qt5Designer-plugin-pyqt5
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/qt5/plugins/designer/libpyqt5.so
+%endif
 
 %files -n qscintilla2-%{module}-api
 %defattr(644,root,root,755)
