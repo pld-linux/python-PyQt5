@@ -251,7 +251,7 @@ kodu wykorzystującego PyQt5.
 
 %prep
 %setup -q -n PyQt5-%{version}
-%patch0 -p1
+%patch -P0 -p1
 
 grep -rl /usr/bin/env examples | xargs sed -i -e '1{
 	s,^#!.*bin/env python$,#!%{__python},
